@@ -11,10 +11,15 @@
  *       d if sel == 11
  */
 
+// HINT: The buses in HDL are indexed from right to left.
+
+// We are using 384 times our primitive gate NAND.
 CHIP Mux4Way16 {
     IN a[16], b[16], c[16], d[16], sel[2];
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    Mux16(a=a, b=c, sel=sel[1], out=aMUXc);
+    Mux16(a=b, b=d, sel=sel[1], out=bMUXd);
+    Mux16(a=aMUXc, b=bMUXd, sel=sel[0], out=out);
 }

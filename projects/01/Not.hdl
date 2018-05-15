@@ -8,10 +8,13 @@
  * out = not in
  */
 
+// Boolean function: out = f(in) = ¬(in^in)
+// We are using 1 time our primitive gate NAND.
 CHIP Not {
     IN in;
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // ¬(in^in)
+    Nand(a=in, b=in, out=out);
 }

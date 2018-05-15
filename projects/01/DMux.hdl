@@ -9,10 +9,20 @@
  *          {0, in} if sel == 1
  */
 
+/** Boolean functions: 
+    a = f(in,sel) = in^¬sel
+    b = y(in,sel) = in^sel 
+*/
+// We are using 5 times our primitive gate NAND.
 CHIP DMux {
     IN in, sel;
     OUT a, b;
 
     PARTS:
-    // Put your code here:
+    // in^¬sel
+    Not(in=sel, out=NOTsel);
+    And(a=in, b=NOTsel, out=a);
+
+    // in^sel
+    And(a=in, b=sel, out=b);
 }

@@ -9,10 +9,16 @@
  *       0 otherwise
  */
 
+// Boolean function: out = f(a,b) = ¬(¬(a^b))
+// We are using 2 times our primitive gate NAND.
 CHIP And {
     IN a, b;
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // ¬(a^b)
+    Nand(a=a, b=b, out=aNANDb);
+
+    // ¬(¬(a^b))
+    Not(in=aNANDb, out=out);
 }

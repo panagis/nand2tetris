@@ -9,10 +9,20 @@
  *       b otherwise
  */
 
+// Boolean function: out = f(a,b,sel) = (a^¬sel) ∨ (b^sel)
+// We are using 8 times our primitive gate NAND.
 CHIP Mux {
     IN a, b, sel;
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // (a^¬sel)
+    Not(in=sel, out=NOTsel);
+    And(a=a, b=NOTsel, out=NOTselANDa);
+
+    // (b^sel)
+    And(a=b, b=sel, out=bANDsel);
+
+    // (a^¬sel) ∨ (b^sel)
+    Or(a=NOTselANDa, b=bANDsel, out=out);
 }

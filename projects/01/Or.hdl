@@ -9,10 +9,19 @@
  *       0 otherwise
  */
 
+// Boolean function: out = f(a,b) = ¬(¬(a^a)^¬(b^b))
+// We are using 3 times our primitive gate NAND.
 CHIP Or {
     IN a, b;
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // ¬(a^a)
+    Nand(a=a, b=a, out=aNANDa);
+    
+    //¬(b^b)
+    Nand(a=b, b=b, out=bNANDb);
+    
+    // ¬(¬(a^a)^¬(b^b))
+    Nand(a=aNANDa, b=bNANDb, out=out);
 }

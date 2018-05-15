@@ -8,10 +8,21 @@
  * out = not (a == b)
  */
 
+// Boolean function: out = f(a,b) = (¬a^b) ∨ (a^¬b)
+// We are using 9 times our primitive gate NAND.
 CHIP Xor {
     IN a, b;
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // (¬a^b)
+    Not(in=a, out=NOTa);
+    And(a=NOTa, b=b, out=NOTaANDb);
+
+    // (a^¬b)
+    Not(in=b, out=NOTb);
+    And(a=a, b=NOTb, out=NOTbANDa);
+
+    // (¬a^b) ∨ (a^¬b)
+    Or(a=NOTaANDb, b=NOTbANDa, out=out);
 }

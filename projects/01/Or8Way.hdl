@@ -8,10 +8,19 @@
  * out = (in[0] or in[1] or ... or in[7])
  */
 
+// We are using 21 times our primitive gate NAND.
 CHIP Or8Way {
     IN in[8];
     OUT out;
 
     PARTS:
-    // Put your code here:
+    Or(a=in[0], b=in[1], out=a0Va1);
+    Or(a=in[2], b=in[3], out=a2Va3);
+    Or(a=in[4], b=in[5], out=a4Va5);
+    Or(a=in[6], b=in[7], out=a6Va7);
+
+    Or(a=a0Va1, b=a2Va3, out=a0Va1Va2Va3);
+    Or(a=a4Va5, b=a6Va7, out=a4Va5Va6Va7);
+    
+    Or(a=a0Va1Va2Va3, b=a4Va5Va6Va7, out=out);
 }

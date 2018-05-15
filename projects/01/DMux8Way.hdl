@@ -11,10 +11,17 @@
  *                            {0, 0, 0, 0, 0, 0, 0, in} if sel == 111
  */
 
+// HINT: The buses in HDL are indexed from right to left.
+
+// We are using 35 times our primitive gate NAND.
 CHIP DMux8Way {
     IN in, sel[3];
     OUT a, b, c, d, e, f, g, h;
 
     PARTS:
-    // Put your code here:
+    DMux4Way(in=in, sel=sel[1..2], a=aORb, b=cORd, c=eORf, d=gORh);
+    DMux(in=aORb, sel=sel[0], a=a, b=b);
+    DMux(in=cORd, sel=sel[0], a=c, b=d);
+    DMux(in=eORf, sel=sel[0], a=e, b=f);
+    DMux(in=gORh, sel=sel[0], a=g, b=h);
 }
