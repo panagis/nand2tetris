@@ -42,5 +42,51 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+    // if (zx == 1) set x = 0 
+    Mux16(a=x, b=false, sel=zx, out=x2);
+
+    // if (nx == 1) set x = !x
+    Not16(in=x2, out=NOTx2);
+    Mux16(a=x2, b=NOTx2, sel=nx, out=x3);
+
+    /* HINT: We can use one Mux4Way16 instead of two Mux16 gates,
+             but we will increase the complexity, 
+             so this implementation is faster. 
+    */
+
+    // if (zy == 1) set y = 0
+    Mux16(a=y, b=false, sel=zy, out=y2);
+
+    // if (ny == 1) set y = !y
+    Not16(in=y2, out=NOTy2);
+    Mux16(a=y2, b=NOTy2, sel=ny, out=y3);
+
+    // if (f == 0)  set out = x & y 
+    And16(a=x3, b=y3, out=x3ANDy3);
+    // if (f == 1)  set out = x + y 
+    Add16(a=x3, b=y3, out=x3ADDy3);
+    Mux16(a=x3ANDy3, b=x3ADDy3, sel=f, out=tempOut);
+
+    // if (no == 1) set out = !out
+    Not16(in=tempOut, out=NOTtempOut);
+    Mux16(a=tempOut, b=NOTtempOut, sel=no, out=tempOut2);
+
+    // if (out == 0) set zr = 1
+
+    /* Check if the least significant part of out has ones */
+    And16(a=tempOut2, b=true, out[0..7]=lsp);
+    Or8Way(in=lsp, out=OR8WAYlsp);
+    
+    /* Check if the most significant part of out has ones */
+    And16(a=tempOut2, b=true, out[8..15]=msp);
+    Or8Way(in=msp, out=OR8WAYmsp);
+
+    Or(a=OR8WAYlsp, b=OR8WAYmsp, out=hasOnes);
+    Not(in=hasOnes, out=zr);
+
+    // if (out < 0) set ng = 1
+    And16(a=tempOut2, b=true, out[15]=ng);
+
+    // Out
+    And16(a=tempOut2, b=true, out=out);
 }
